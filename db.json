@@ -3,31 +3,31 @@
         {
             "id": 1,
             "title": "Salary",
-            "amount": 48000,
+            "amount": 480,
             "date": "12/12/2024"
         },
         {
             "id": 2,
             "title": "Salary",
-            "amount": 43000,
+            "amount": 430,
             "date": "12/11/2024"
         },
         {
             "id": 3,
             "title": "Salary",
-            "amount": 44000,
+            "amount": 440,
             "date": "12/10/2024"
         },
         {
             "id": 4,
             "title": "Salary",
-            "amount": 41000,
+            "amount": 410,
             "date": "12/09/2024"
         },
         {
             "id": 5,
             "title": "Salary",
-            "amount": 40000,
+            "amount": 400,
             "date": "12/08/2024"
         }
     ]

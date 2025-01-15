@@ -14,12 +14,14 @@ function App() {
     .catch(err => console.error(err))
   }, [])
 
+  const curency = "$"
+
 
   return (
     <Router>
       <Navbar/>
       <Routes>
-        <Route path='/' element={<Income incomes={incomes} setIncomes={setIncomes}/>}  />
+        <Route path='/' element={<Income incomes={incomes} setIncomes={setIncomes} curency={curency}/>}  />
         <Route path='/expense' element={<Expense/>}/>
         <Route path='/dashboard' element={<Dashboard/>}/>
       </Routes>
