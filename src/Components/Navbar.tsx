@@ -7,7 +7,7 @@ const Navbar = () => {
       <div>
         Logo
       </div>
-      <div className='flex flex-row gap-5'>
+      <div className='flex flex-row gap-5 text-[14px] lg:text-[16px]'>
         <NavLink 
           to={'/'}
           className={({ isActive }) => 
