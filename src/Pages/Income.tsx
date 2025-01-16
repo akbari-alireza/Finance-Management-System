@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {  useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
@@ -16,6 +16,7 @@ type Props = {
 }
 
 const Income = ({ incomes = [], setIncomes, currency }: Props) => {
+
     const [incomeList, setIncomeList] = useState(incomes);
     const [input, setInput] = useState(true);
     const [title, setTitle] = useState("");
@@ -41,6 +42,7 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
         setDate("");
         setInput(true);
     }
+    
 
     const totalAmount = incomeList.reduce((acc, item) => acc + item.amount, 0);
 
@@ -84,7 +86,7 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
         setEditDate('');
         setInput(true);
     }
-
+    
     return (
         <div className='bg-[#f7f8fa] flex flex-col items-center '>
             {input ? (
