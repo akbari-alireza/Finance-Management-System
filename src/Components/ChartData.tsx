@@ -5,11 +5,12 @@ const ChartData = {
     "Monday",
     "Tuesday",
     "Wednesday",
-    "Thursday",
+    "Thursday", 
     "Friday",
     "Saturday",
     "Sunday"
   ],
+  
   datasets: [ // Change 'Database' to 'datasets'
     {
       label: "Steps",
