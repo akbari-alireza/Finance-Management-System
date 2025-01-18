@@ -4,7 +4,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
 type ExpenseProps = {
-  id: number;
+  id: string;
   title: string;
   amount: number;
   date: string;
@@ -31,7 +31,7 @@ const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
     e.preventDefault();
 
     const newExpense = {
-      id: Date.now(), 
+      id: `${Date.now()}`, 
       title,
       amount,
       date,
