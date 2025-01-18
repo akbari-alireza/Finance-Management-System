@@ -28,8 +28,8 @@ function App() {
       <Navbar/>
       <Routes>
         <Route path='/' element={<Income incomes={incomes} setIncomes={setIncomes} currency={currency}/>}  />
-        <Route path='/expense' element={<Expense expenses={expenses} setExpenses={setExpenses} currency={currency}/>}/>
-        <Route path='/dashboard' element={<Dashboard/>}/>
+        <Route path='/expense' element={<Expense expenses={expenses} setExpenses={setExpenses}/>}/>
+        <Route path='/dashboard' element={<Dashboard expenses={expenses} incomes={incomes} />}/>
       </Routes>
     </Router>
   )

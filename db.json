@@ -35,13 +35,13 @@
     {
       "id": "1",
       "title": "Mobile",
-      "amount": 580,
+      "amount": 1800,
       "date": "2024-01-23"
     },
     {
       "id": "2",
       "title": "Computer",
-      "amount": 260,
+      "amount": 1300,
       "date": "2024-02-23"
     },
     {
@@ -52,8 +52,8 @@
     },
     {
       "id": "4",
-      "title": "Cars",
-      "amount": 78000,
+      "title": "Book",
+      "amount": 30,
       "date": "2024-05-23"
     },
     {
@@ -63,10 +63,16 @@
       "date": "2024-09-23"
     },
     {
-      "id": "01737192469895",
-      "title": "Mobile ",
-      "amount": 3000,
+      "id": "1737193917473",
+      "title": "Cat",
+      "amount": 300,
       "date": "2025-01-18"
+    },
+    {
+      "id": "1737197392469",
+      "title": "Screen",
+      "amount": 150,
+      "date": "2024-06-19"
     }
   ]
 }

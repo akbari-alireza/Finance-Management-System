@@ -4,7 +4,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
 type ExpenseProps = {
-  id: string;
+  id: number;
   title: string;
   amount: number;
   date: string;

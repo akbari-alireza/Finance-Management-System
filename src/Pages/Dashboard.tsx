@@ -1,14 +1,27 @@
-import React, { useState } from 'react';
-import LineChart from '../Components/LineChart'; // Adjust the path as needed
+import ExpenseChart from '../Components/ExpenseChart';
+import IncomeChart from '../Components/IncomeChart';
 
-const Dashboard = () => {
+type ExpenseProps = {
+  id: number;
+  title: string;
+  amount: number;
+  date: string;
+};
 
+type Props = {
+  incomes: ExpenseProps[];
+  expenses: ExpenseProps[];
+}
+
+const Dashboard = ({ expenses, incomes }: Props) => {
   return (
-    <div className='flex flex-col items-center'>
-      <div className='w-1/2'>
-        <LineChart /> {/* This will now display the sample chart */}
+    <div className=' flex  items-center md:flex-row flex-col justify-center'>
+      <div className='w-[100%] sm:w-[50%] '>
+        <IncomeChart incomes={incomes} />
       </div>
-
+      <div className='w-[100%] sm:w-[50%] '>
+        <ExpenseChart  expenses={expenses} />
+      </div>
     </div>
   );
 };

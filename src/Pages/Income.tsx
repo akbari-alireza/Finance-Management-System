@@ -1,4 +1,5 @@
-import {  useState } from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
@@ -16,8 +17,7 @@ type Props = {
 }
 
 const Income = ({ incomes = [], setIncomes, currency }: Props) => {
-
-    const [incomeList, setIncomeList] = useState(incomes);
+    const [incomeList, setIncomeList] = useState<IncomesProps[]>(incomes);
     const [input, setInput] = useState(true);
     const [title, setTitle] = useState("");
     const [amount, setAmount] = useState(0);
@@ -27,31 +27,44 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
     const [editAmount, setEditAmount] = useState(0);
     const [editDate, setEditDate] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    // Update incomeList when incomes prop changes
+    useEffect(() => {
+        setIncomeList(incomes);
+    }, [incomes]);
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const newIncome = {
-            id: Date.now(),
+            id: `${Date.now()}`,
             title,
             amount,
             date
         };
-        setIncomeList([...incomeList, newIncome]);
-        setIncomes([...incomeList, newIncome]);
-        setTitle("");
-        setAmount(0);
-        setDate("");
-        setInput(true);
+
+        try {
+            await axios.post('http://localhost:3001/Income', newIncome); // Adjust the URL as needed
+            const updatedList = [...incomeList, newIncome];
+            setIncomeList(updatedList);
+            setIncomes(updatedList);
+            resetForm();
+        } catch (error) {
+            console.error("Error adding income:", error);
+        }
     }
-    
 
     const totalAmount = incomeList.reduce((acc, item) => acc + item.amount, 0);
 
-    const deleteIncomeHandler = (id: number) => {
+    const deleteIncomeHandler = async (id: number) => {
         const confirmDelete = window.confirm('Do you want to delete?');
         if (confirmDelete) {
-            const updatedList = incomeList.filter(item => item.id !== id);
-            setIncomeList(updatedList);
-            setIncomes(updatedList);
+            try {
+                await axios.delete(`http://localhost:3001/Income/${id}`); // Adjust the URL as needed
+                const updatedList = incomeList.filter(item => item.id !== id);
+                setIncomeList(updatedList);
+                setIncomes(updatedList);
+            } catch (error) {
+                console.error("Error deleting income:", error);
+            }
         }
     }
 
@@ -63,7 +76,7 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
         setInput(false);
     }
 
-    const handleEditSubmit = (e: React.FormEvent) => {
+    const handleEditSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const updatedIncome = {
             id: editId!,
@@ -71,12 +84,25 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
             amount: editAmount,
             date: editDate
         };
-        const updatedList = incomeList.map(item =>
-            item.id === editId ? updatedIncome : item
-        );
-        setIncomeList(updatedList);
-        setIncomes(updatedList);
-        resetEditFields();
+        
+        try {
+            await axios.put(`http://localhost:3001/Income/${editId}`, updatedIncome); // Adjust the URL as needed
+            const updatedList = incomeList.map(item =>
+                item.id === editId ? updatedIncome : item
+            );
+            setIncomeList(updatedList);
+            setIncomes(updatedList);
+            resetEditFields();
+        } catch (error) {
+            console.error("Error updating income:", error);
+        }
+    }
+
+    const resetForm = () => {
+        setTitle("");
+        setAmount(0);
+        setDate("");
+        setInput(true);
     }
 
     const resetEditFields = () => {
@@ -86,9 +112,9 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
         setEditDate('');
         setInput(true);
     }
-    
+
     return (
-        <div className='bg-[#f7f8fa] flex flex-col items-center '>
+        <div className='bg-[#f7f8fa] flex flex-col items-center'>
             {input ? (
                 <div className='h-[40%] w-[80%] rounded-lg flex flex-col items-center p-4'>
                     <h1 className='font-semibold mb-4'>Income Transaction</h1>
@@ -115,7 +141,7 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
                                                 <FaRegEdit />
                                             </div>
                                             <div
-                                                onClick={() => { deleteIncomeHandler(item.id) }}
+                                                onClick={() => deleteIncomeHandler(item.id)}
                                                 className="hover:bg-[#636364] cursor-pointer hover:text-white p-1 rounded-sm">
                                                 <MdDelete />
                                             </div>
@@ -174,7 +200,7 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
                                 <button type="submit" className="text-white bg-[#767cff] w-[90%] py-2 font-semibold rounded-md">
                                     {editId ? 'UPDATE' : 'SUBMIT'}
                                 </button>
-                                <button onClick={()=> setInput(!input)} className="text-white bg-[#6a6a6b] w-[90%] py-2 font-semibold rounded-md">
+                                <button type="button" onClick={resetEditFields} className="text-white bg-[#6a6a6b] w-[90%] py-2 font-semibold rounded-md">
                                     Cancel
                                 </button>
                             </div>
