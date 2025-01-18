@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
@@ -17,7 +18,6 @@ type Props = {
 
 const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
   const [expenseList, setExpenseList] = useState(expenses);
-  
   const [input, setInput] = useState(true);
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState(0);
@@ -27,27 +27,39 @@ const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
   const [editAmount, setEditAmount] = useState(0);
   const [editDate, setEditDate] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const newExpense = {
-      id: Date.now(),
+      id: Date.now(), 
       title,
       amount,
       date,
     };
-    setExpenseList([...expenseList, newExpense]);
-    setExpenses([...expenseList, newExpense]);
-    resetForm();
+
+    try {
+      await axios.post('http://localhost:3001/Expense', newExpense); 
+      setExpenseList([...expenseList, newExpense]);
+      setExpenses([...expenseList, newExpense]);
+      resetForm();
+    } catch (error) {
+      console.error("Error adding expense:", error);
+    }
   };
 
   const totalAmount = expenseList.reduce((acc, item) => acc + item.amount, 0);
 
-  const deleteExpenseHandler = (id: number) => {
+  const deleteExpenseHandler = async (id: number) => {
     const confirmDelete = window.confirm('Do you want to delete?');
     if (confirmDelete) {
-      const updatedList = expenseList.filter(item => item.id !== id);
-      setExpenseList(updatedList);
-      setExpenses(updatedList);
+      try {
+        await axios.delete(`http://localhost:3001/Expense/${id}`); 
+        const updatedList = expenseList.filter(item => item.id !== id);
+        setExpenseList(updatedList);
+        setExpenses(updatedList);
+      } catch (error) {
+        console.error("Error deleting expense:", error);
+      }
     }
   };
 
@@ -59,21 +71,27 @@ const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
     setInput(false);
   };
 
-  const handleEditSubmit = (e: React.FormEvent) => {
+  const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const updatedExpense = {
-      id: editId!,
+      id: editId,
       title: editTitle,
       amount: editAmount,
       date: editDate,
     };
-    const updatedList = expenseList.map(item =>
-      item.id === editId ? updatedExpense : item
-    );
-    setExpenseList(updatedList);
-    setExpenses(updatedList);
-    resetEditFields();
 
+    try {
+      await axios.put(`http://localhost:3001/Expense/${editId}`, updatedExpense);
+      const updatedList = expenseList.map(item =>
+        item.id === editId ? updatedExpense : item
+      );
+      setExpenseList(updatedList);
+      setExpenses(updatedList);
+      resetEditFields();
+    } catch (error) {
+      console.error("Error updating expense:", error);
+    }
   };
 
   const resetForm = () => {
@@ -82,6 +100,7 @@ const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
     setDate("");
     setInput(true);
   };
+
   const resetEditFields = () => {
     setEditId(null);
     setEditTitle('');
@@ -90,9 +109,6 @@ const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
     setInput(true);
   };
 
-
-  // console.log('hi',input);
-  
   return (
     <div className='bg-[#f7f8fa] flex flex-col items-center'>
       {input ? (
@@ -145,7 +161,7 @@ const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
         <div className="bg-[#f7f8fa] flex flex-col mt-5 items-center justify-center w-full">
           <div className='bg-white h-[40%] w-[80%] rounded-lg shadow-sm border flex flex-col items-center p-4'>
             <h1 className='font-semibold'>Expense Transaction</h1>
-            <form onSubmit={editId ? (handleEditSubmit) : handleSubmit} className="flex flex-col w-full items-center gap-5">
+            <form onSubmit={editId ? handleEditSubmit : handleSubmit} className="flex flex-col w-full items-center gap-5">
               <div className="w-[90%] flex flex-col text-[#959595] gap-2">
                 <h1>Transaction Title</h1>
                 <input
@@ -182,7 +198,7 @@ const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
                 <button type="submit" className="text-white bg-[#767cff] w-[90%] py-2 font-semibold rounded-md">
                   {editId ? 'UPDATE' : 'SUBMIT'}
                 </button>
-                <button onClick={resetEditFields} className="text-white bg-[#6a6a6b] w-[90%] py-2 font-semibold rounded-md">
+                <button type="button" onClick={resetEditFields} className="text-white bg-[#6a6a6b] w-[90%] py-2 font-semibold rounded-md">
                   Cancel
                 </button>
               </div>

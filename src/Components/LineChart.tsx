@@ -10,9 +10,7 @@ import {
     Tooltip,
     Legend
 } from 'chart.js';
-import ChartData from './ChartData'; // Adjust path as necessary
 
-// Register the necessary components with Chart.js
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -23,34 +21,20 @@ ChartJS.register(
     Legend
 );
 
-export const LineChart = () => {
-    // Define chart options
-    const options = {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            title: {
-                display: true,
-                text: 'Weekly Steps', // Title of your chart
-            },
-        },
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Days of the Week', // Label for the x-axis
-                },
-            },
-            y: {
-                title: {
-                    display: true,
-                    text: 'Steps', // Label for the y-axis
-                },
-            },
-        },
+const LineChart = () => {
+    const data = {
+        labels: ['sdfsdf'], 
+        datasets: [
+            {
+                label: "Expenses",
+                data: 'dsfds', 
+                borderColor: "#767cff",
+                fill: false,
+            }
+        ],
     };
 
-    return <Line options={options} data={ChartData} />;
+    return <Line data={data} />;
 };
+
+export default LineChart;
