@@ -29,6 +29,12 @@
       "title": "Salary",
       "amount": 400,
       "date": "2024-05-23"
+    },
+    {
+      "id": "1737395796954",
+      "title": "Salary",
+      "amount": 150,
+      "date": "2025-01-15"
     }
   ],
   "Expense": [
@@ -73,6 +79,12 @@
       "title": "Screen",
       "amount": 150,
       "date": "2024-06-19"
+    },
+    {
+      "id": "1737395862906",
+      "title": "Keyboard",
+      "amount": 400,
+      "date": "2025-01-13"
     }
   ]
 }
