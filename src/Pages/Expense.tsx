@@ -38,7 +38,7 @@ const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
     };
 
     try {
-      await axios.post('http://localhost:3001/Expense', newExpense); 
+      await axios.post('http://localhost:3000/Expense', newExpense); 
       setExpenseList([...expenseList, newExpense]);
       setExpenses([...expenseList, newExpense]);
       resetForm();
@@ -53,7 +53,7 @@ const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
     const confirmDelete = window.confirm('Do you want to delete?');
     if (confirmDelete) {
       try {
-        await axios.delete(`http://localhost:3001/Expense/${id}`); 
+        await axios.delete(`http://localhost:3000/Expense/${id}`); 
         const updatedList = expenseList.filter(item => item.id !== id);
         setExpenseList(updatedList);
         setExpenses(updatedList);
@@ -82,7 +82,7 @@ const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
     };
 
     try {
-      await axios.put(`http://localhost:3001/Expense/${editId}`, updatedExpense);
+      await axios.put(`http://localhost:3000/Expense/${editId}`, updatedExpense);
       const updatedList = expenseList.map(item =>
         item.id === editId ? updatedExpense : item
       );

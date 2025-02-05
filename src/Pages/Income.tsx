@@ -42,7 +42,7 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
         };
 
         try {
-            await axios.post('http://localhost:3001/Income', newIncome); // Adjust the URL as needed
+            await axios.post('http://localhost:3000/Income', newIncome); // Adjust the URL as needed
             const updatedList = [...incomeList, newIncome];
             setIncomeList(updatedList);
             setIncomes(updatedList);
@@ -58,7 +58,7 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
         const confirmDelete = window.confirm('Do you want to delete?');
         if (confirmDelete) {
             try {
-                await axios.delete(`http://localhost:3001/Income/${id}`); // Adjust the URL as needed
+                await axios.delete(`http://localhost:3000/Income/${id}`); // Adjust the URL as needed
                 const updatedList = incomeList.filter(item => item.id !== id);
                 setIncomeList(updatedList);
                 setIncomes(updatedList);
@@ -86,7 +86,7 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
         };
         
         try {
-            await axios.put(`http://localhost:3001/Income/${editId}`, updatedIncome); // Adjust the URL as needed
+            await axios.put(`http://localhost:3000/Income/${editId}`, updatedIncome); // Adjust the URL as needed
             const updatedList = incomeList.map(item =>
                 item.id === editId ? updatedIncome : item
             );

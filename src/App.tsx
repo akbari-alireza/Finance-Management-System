@@ -6,31 +6,48 @@ import Expense from './Pages/Expense'
 import Dashboard from './Pages/Dashboard'
 import axios from 'axios'
 function App() {
-  
+
   const [incomes, setIncomes] = useState([]);
-  useEffect(() =>{
-    axios.get('http://localhost:3001/Income')
-    .then(res => setIncomes(res.data))
-    .catch(err => console.error(err))
+  const [loadingIncomes, setLoadingIncomes] = useState(true);
+  useEffect(() => {
+    axios.get('http://localhost:3000/Income')
+      .then(res => {
+        setIncomes(res.data);
+        setLoadingIncomes(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoadingIncomes(false);
+      })
   }, [])
-  
+
+  const [loadingExpenses, setLoadingExpenses] = useState(true);
+
   const [expenses, setExpenses] = useState([]);
   useEffect(() => {
-    axios.get('http://localhost:3001/Expense')
-    .then(res => setExpenses(res.data))
-    .catch(err => console.error(err))
-  })
+    axios.get('http://localhost:3000/Expense')
+      .then(res => {
+        setExpenses(res.data);
+        setLoadingExpenses(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoadingExpenses(false);
+      })
+  }, [])
   const currency = "$";
 
 
   return (
     <Router>
-      <Navbar/>
-      <Routes>
-        <Route path='/' element={<Income incomes={incomes} setIncomes={setIncomes} currency={currency}/>}  />
-        <Route path='/expense' element={<Expense expenses={expenses} setExpenses={setExpenses}/>}/>
-        <Route path='/dashboard' element={<Dashboard expenses={expenses} incomes={incomes} />}/>
-      </Routes>
+      <Navbar />
+      {loadingIncomes || loadingExpenses ? <h1>Loading...</h1> :
+        <Routes>
+          <Route path='/' element={<Income incomes={incomes} setIncomes={setIncomes} currency={currency} />} />
+          <Route path='/expense' element={<Expense expenses={expenses} setExpenses={setExpenses} />} />
+          <Route path='/dashboard' element={<Dashboard expenses={expenses} incomes={incomes} />} />
+        </Routes>}
+
     </Router>
   )
 }
