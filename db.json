@@ -88,6 +88,13 @@
     }
   ],
   "users": [
-    
+    {
+      "id": "eab5",
+      "firstName": "ali ",
+      "lastName": "akbari",
+      "email": "ali@gmail.com",
+      "password": "123",
+      "confirmPassword": "123"
+    }
   ]
 }
