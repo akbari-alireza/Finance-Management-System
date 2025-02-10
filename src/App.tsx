@@ -5,6 +5,8 @@ import Navbar from './Components/Navbar'
 import Expense from './Pages/Expense'
 import Dashboard from './Pages/Dashboard'
 import axios from 'axios'
+import Registration from './Components/Registration'
+import Login from './Components/Login'
 function App() {
 
   const [incomes, setIncomes] = useState([]);
@@ -46,6 +48,10 @@ function App() {
           <Route path='/' element={<Income incomes={incomes} setIncomes={setIncomes} currency={currency} />} />
           <Route path='/expense' element={<Expense expenses={expenses} setExpenses={setExpenses} />} />
           <Route path='/dashboard' element={<Dashboard expenses={expenses} incomes={incomes} />} />
+          <Route path='/registration' element={<Registration/>} />
+          <Route path='/login' element={<Login/>} />
+          <Route path='*' element={<h1>Not Found</h1>} />
+
         </Routes>}
 
     </Router>

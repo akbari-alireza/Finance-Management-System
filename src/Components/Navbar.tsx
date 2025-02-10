@@ -8,29 +8,34 @@ const Navbar = () => {
         Logo
       </div>
       <div className='flex flex-row gap-5 text-[14px] lg:text-[16px]'>
-        <NavLink 
+        <NavLink
           to={'/'}
-          className={({ isActive }) => 
+          className={({ isActive }) =>
             isActive ? 'bg-white text-[#767cff] px-3 py-1 rounded-sm' : 'px-3 py-1 rounded-sm text-white hover:bg-white  hover:text-[#767cff]'
           }
         >
           Income
         </NavLink>
-        <NavLink 
+        <NavLink
           to={'/expense'}
-          className={({ isActive }) => 
+          className={({ isActive }) =>
             isActive ? 'bg-white text-[#767cff] px-3 py-1 rounded-sm' : 'px-3 py-1 rounded-sm text-white hover:bg-white hover:text-[#767cff]'
           }
         >
           Expense
         </NavLink>
-        <NavLink 
+        <NavLink
           to={'/dashboard'}
-          className={({ isActive }) => 
+          className={({ isActive }) =>
             isActive ? 'bg-white text-[#767cff] px-3 py-1 rounded-sm' : 'px-3 py-1 rounded-sm text-white hover:bg-white hover:text-[#767cff]'
           }
         >
           Dashboard
+        </NavLink>
+        <NavLink to={'/registration'} className={({ isActive }) =>
+          isActive ? 'bg-white text-[#767cff] px-3 py-1 rounded-sm' : 'px-3 py-1 rounded-sm text-white hover:bg-white hover:text-[#767cff]'
+        }>
+          Registration
         </NavLink>
       </div>
     </div>
