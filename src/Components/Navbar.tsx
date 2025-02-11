@@ -17,7 +17,7 @@ const Navbar = () => {
           Dashboard
         </NavLink>
         <NavLink
-          to={'/'}
+          to={'/incomes'}
           className={({ isActive }) =>
             isActive ? 'bg-white text-[#767cff] px-3 py-1 rounded-sm' : 'px-3 py-1 rounded-sm text-white hover:bg-white  hover:text-[#767cff]'
           }
@@ -41,7 +41,7 @@ const Navbar = () => {
           Login
         </NavLink>
         <NavLink
-          to={'/registration'} className={({ isActive }) =>
+          to={'/'} className={({ isActive }) =>
             isActive ? 'bg-white text-[#767cff] px-3 py-1 rounded-sm' : 'px-3 py-1 rounded-sm text-white hover:bg-white hover:text-[#767cff]'
           }>
           Sign Up

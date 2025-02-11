@@ -9,11 +9,11 @@ const Login = () => {
     });
     const [errorMessages, setErrorMessages] = useState('');
     const navigate = useNavigate();
-    const handleSubmit = (e: Event) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         axios.get('http://localhost:3000/users')
             .then(result => {
-                result.data.map(user => {
+                result.data.map((user : { email: string, password: string })  => {
                     if (user.email === formData.email) {
                         if (user.password === formData.password) {
                             alert('login seccesfully')

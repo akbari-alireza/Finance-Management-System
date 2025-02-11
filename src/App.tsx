@@ -45,11 +45,11 @@ function App() {
       <Navbar />
       {loadingIncomes || loadingExpenses ? <h1>Loading...</h1> :
         <Routes>
-          <Route path='/' element={<Income incomes={incomes} setIncomes={setIncomes} currency={currency} />} />
+          <Route path='/' element={<Registration/>} />
+          <Route path='/login' element={<Login/>} />
+          <Route path='/incomes' element={<Income incomes={incomes} setIncomes={setIncomes} currency={currency} />} />
           <Route path='/expense' element={<Expense expenses={expenses} setExpenses={setExpenses} />} />
           <Route path='/dashboard' element={<Dashboard expenses={expenses} incomes={incomes} />} />
-          <Route path='/registration' element={<Registration/>} />
-          <Route path='/login' element={<Login/>} />
           <Route path='*' element={<h1>Not Found</h1>} />
 
         </Routes>}
