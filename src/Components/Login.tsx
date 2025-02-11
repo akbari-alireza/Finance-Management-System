@@ -17,7 +17,7 @@ const Login = () => {
                     if (user.email === formData.email) {
                         if (user.password === formData.password) {
                             alert('login seccesfully')
-                            navigate('/expense')
+                            navigate('/dashboard')
                         } else {
                             setErrorMessages('password or email is not correct')
 
@@ -30,7 +30,7 @@ const Login = () => {
 
     return (
         <div className='w-full flex flex-col gap-5 h-screen justify-center items-center' >
-            <div className='bg-gray-50 px-5 py-5 w-[70%] rounded-sm shadow-lg border'>
+            <div className='bg-gray-50 px-5 py-5 w-[70%] md:w-[40%] rounded-sm shadow-lg border'>
                 <h1 className='text-2xl text-gray-500 mb-6'>Login</h1>
                 <form onSubmit={handleSubmit} action="" className='flex flex-col gap-4'>
 
