@@ -103,14 +103,6 @@
       "email": "hadi@gmail.com",
       "password": "123",
       "confirmPassword": "123"
-    },
-    {
-      "id": "a380",
-      "firstName": "Hadi",
-      "lastName": "Alizada",
-      "email": "hadi@gmail.com",
-      "password": "123",
-      "confirmPassword": "123"
     }
   ]
 }
