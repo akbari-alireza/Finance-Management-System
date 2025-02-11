@@ -28,17 +28,17 @@ const Registration = () => {
     }
     return (
         <div className='w-full flex flex-col gap-5 h-screen justify-center items-center' >
-            <div className='bg-gray-50 px-5 py-5 w-[70%] rounded-sm shadow-lg border'>
+            <div className='bg-gray-50 px-5 py-5 w-[70%] md:w-[50%] rounded-sm shadow-lg border'>
                 <h1 className='text-2xl text-gray-500 mb-6'>Create Your Account</h1>
                 <form onSubmit={handleSubmit} action="" className='flex flex-col gap-4'>
-                    <div className='flex flex-row justify-between gap-5'>
-                        <div className='flex flex-col w-full'>
+                    <div className='flex flex-row justify-between gap-5 '>
+                        <div className='flex flex-col w-[100%] '>
                             <label className='font-semibold' htmlFor="firstName">First Name<span className='text-red-600'>*</span></label>
-                            <input onChange={(e)=> setFormData({...formData, firstName: e.target.value})} required id="firstName" className='p-2 rounded-md border bg-transparent' type="text" placeholder='Enter First Name' />
+                            <input  onChange={(e)=> setFormData({...formData, firstName: e.target.value})} required id="firstName" className='p-2 rounded-md border bg-transparent w-[100%]' type="text" placeholder='Enter First Name' />
                         </div>
-                        <div className='flex flex-col w-full'>
+                        <div className='flex flex-col w-[100%]'>
                             <label className='font-semibold' htmlFor="lastName">Last Name<span className='text-red-600'>*</span></label>
-                            <input onChange={(e)=> setFormData({...formData, lastName: e.target.value})} required id="lastName" className='p-2 rounded-md border bg-transparent' type="text" placeholder='Enter Last Name' />
+                            <input  onChange={(e)=> setFormData({...formData, lastName: e.target.value})} required id="lastName" className='p-2 rounded-md border bg-transparent w-[100%]' type="text" placeholder='Enter Last Name' />
                         </div>
                     </div>
                     <div>
