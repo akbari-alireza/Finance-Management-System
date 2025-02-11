@@ -1,7 +1,9 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import Navbar from "../Components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 type ExpenseProps = {
   id: number;
@@ -108,9 +110,17 @@ const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
     setEditDate('');
     setInput(true);
   };
+  const usenavigate = useNavigate();
+  useEffect(() => {
+    let user = sessionStorage.getItem('user');
+    if(user === '' || user === null){
+      usenavigate('/');
+    }
+  }, [])
 
   return (
     <div className='bg-[#f7f8fa] flex flex-col items-center'>
+      <Navbar/>
       {input ? (
         <div className='h-[40%] w-[80%] rounded-lg flex flex-col items-center p-4'>
           <h1 className='font-semibold mb-4'>Expense Transactions</h1>

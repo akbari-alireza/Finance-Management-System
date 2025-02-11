@@ -1,8 +1,15 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 const Registration: React.FC = () => {
+    const usenavigate = useNavigate();
+    useEffect(() => {
+        let user = sessionStorage.getItem('user');
+        if (user === '' || user === null) {
+            usenavigate('/');
+        }
+    }, [])
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -28,7 +35,7 @@ const Registration: React.FC = () => {
 
             if (userExists) {
                 setErrorEmail('Email Already Exists');
-                return; 
+                return;
             } else {
                 await axios.post('http://localhost:3000/users', formData);
                 alert('Registration Successful');
@@ -47,62 +54,62 @@ const Registration: React.FC = () => {
                     <div className='flex flex-row justify-between gap-5'>
                         <div className='flex flex-col w-[100%]'>
                             <label className='font-semibold' htmlFor="firstName">First Name<span className='text-red-600'>*</span></label>
-                            <input 
-                                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })} 
-                                required 
-                                id="firstName" 
-                                className='p-2 rounded-md border bg-transparent w-[100%]' 
-                                type="text" 
-                                placeholder='Enter First Name' 
+                            <input
+                                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                                required
+                                id="firstName"
+                                className='p-2 rounded-md border bg-transparent w-[100%]'
+                                type="text"
+                                placeholder='Enter First Name'
                             />
                         </div>
                         <div className='flex flex-col w-[100%]'>
                             <label className='font-semibold' htmlFor="lastName">Last Name<span className='text-red-600'>*</span></label>
-                            <input 
-                                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })} 
-                                required 
-                                id="lastName" 
-                                className='p-2 rounded-md border bg-transparent w-[100%]' 
-                                type="text" 
-                                placeholder='Enter Last Name' 
+                            <input
+                                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                                required
+                                id="lastName"
+                                className='p-2 rounded-md border bg-transparent w-[100%]'
+                                type="text"
+                                placeholder='Enter Last Name'
                             />
                         </div>
                     </div>
                     <div>
                         <label className='font-semibold' htmlFor="email">Email<span className='text-red-600'>*</span></label>
-                        <input 
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })} 
-                            required 
-                            id="email" 
-                            className='p-2 w-full rounded-md border bg-transparent' 
-                            type="email" 
-                            placeholder='Enter Email' 
+                        <input
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            required
+                            id="email"
+                            className='p-2 w-full rounded-md border bg-transparent'
+                            type="email"
+                            placeholder='Enter Email'
                         />
                         <p className='text-red-500'>{errorEmail}</p>
                     </div>
                     <div>
                         <label className='font-semibold' htmlFor="password">Password<span className='text-red-600'>*</span></label>
-                        <input 
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })} 
-                            required 
-                            id="password" 
-                            className='p-2 w-full rounded-md border bg-transparent' 
-                            type="password" 
-                            placeholder='Enter Password' 
+                        <input
+                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                            required
+                            id="password"
+                            className='p-2 w-full rounded-md border bg-transparent'
+                            type="password"
+                            placeholder='Enter Password'
                         />
                     </div>
                     <div>
                         <label className='font-semibold' htmlFor="confirmPassword">Confirm Password<span className='text-red-600'>*</span></label>
-                        <input 
+                        <input
                             onChange={(e) => {
                                 setFormData({ ...formData, confirmPassword: e.target.value });
                                 setErrorMessages(formData.password !== e.target.value ? 'Passwords do not match' : 'Correct');
-                            }} 
-                            required 
-                            id="confirmPassword" 
-                            className='p-2 w-full rounded-md border bg-transparent' 
-                            type="password" 
-                            placeholder='Confirm Password' 
+                            }}
+                            required
+                            id="confirmPassword"
+                            className='p-2 w-full rounded-md border bg-transparent'
+                            type="password"
+                            placeholder='Confirm Password'
                         />
                         <p className={errorMessages === 'Correct' ? 'text-green-600' : 'text-red-500'}>{errorMessages}</p>
                     </div>
@@ -111,7 +118,7 @@ const Registration: React.FC = () => {
                     </div>
                 </form>
             </div>
-            <p>If you have an account, please <NavLink to={'/login'}><span className='text-blue-500 underline'>Login Now</span></NavLink></p>
+            <p>If you have an account, please <NavLink to={'/'}><span className='text-blue-500 underline'>Login Now</span></NavLink></p>
         </div>
     );
 }

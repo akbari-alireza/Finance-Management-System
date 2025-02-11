@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import Navbar from "../Components/Navbar";
 
 type IncomesProps = {
     id: number;
@@ -115,6 +116,7 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
 
     return (
         <div className='bg-[#f7f8fa] flex flex-col items-center'>
+            <Navbar/>
             {input ? (
                 <div className='h-[40%] w-[80%] rounded-lg flex flex-col items-center p-4'>
                     <h1 className='font-semibold mb-4'>Income Transaction</h1>

@@ -85,6 +85,18 @@
       "title": "Keyboard",
       "amount": 400,
       "date": "2025-01-13"
+    },
+    {
+      "id": "1739253682243",
+      "title": "Chair",
+      "amount": 40,
+      "date": "2025-02-11"
+    },
+    {
+      "id": "1739253707928",
+      "title": "HDMI ",
+      "amount": 2000,
+      "date": "2025-02-11"
     }
   ],
   "users": [
@@ -95,7 +107,7 @@
       "email": "ali@gmail.com",
       "password": "123",
       "confirmPassword": "123",
-      "aliExpense":[
+      "aliExpense": [
         {
           "id": "1",
           "title": "Home",

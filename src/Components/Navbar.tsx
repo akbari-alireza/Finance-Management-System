@@ -35,17 +35,12 @@ const Navbar = () => {
       </div>
       <div className='flex gap-1'>
         <NavLink
-          to={'/login'} className={({ isActive }) =>
-            isActive ? 'bg-white text-[#767cff] px-3 py-1 rounded-sm' : 'px-3 py-1 rounded-sm text-white hover:bg-white hover:text-[#767cff]'
-          }>
-          Login
-        </NavLink>
-        <NavLink
           to={'/'} className={({ isActive }) =>
             isActive ? 'bg-white text-[#767cff] px-3 py-1 rounded-sm' : 'px-3 py-1 rounded-sm text-white hover:bg-white hover:text-[#767cff]'
           }>
-          Sign Up
+          Log Out
         </NavLink>
+        
       </div>
     </div>
   )

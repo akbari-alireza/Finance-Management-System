@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 
 const Login = () => {
@@ -7,6 +7,9 @@ const Login = () => {
         email: '',
         password: ''
     });
+    useEffect(() => {
+        sessionStorage.clear();
+    },[])
     const [errorMessages, setErrorMessages] = useState('');
     const navigate = useNavigate();
     const handleSubmit = async (e: React.FormEvent) => {
@@ -17,6 +20,7 @@ const Login = () => {
                     if (user.email === formData.email) {
                         if (user.password === formData.password) {
                             alert('login seccesfully')
+                            sessionStorage.setItem('user', JSON.stringify(user))
                             navigate('/dashboard')
                         } else {
                             setErrorMessages('password or email is not correct')
