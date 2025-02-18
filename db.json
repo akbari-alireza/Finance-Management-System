@@ -157,15 +157,58 @@
           "title": "Mobile",
           "amount": 100,
           "date": "2025-02-18"
+        },
+        {
+          "id": "1739861459173",
+          "title": "LCD",
+          "amount": 60,
+          "date": "2025-02-01"
+        },
+        {
+          "id": "1739868219160",
+          "title": "Monitor",
+          "amount": 120,
+          "date": "2025-02-18"
         }
       ],
-      "userIncome": []
+      "userIncome": [
+        {
+          "id": "1739864364822",
+          "title": "Free Lancer",
+          "amount": 10000,
+          "date": "2025-02-18"
+        },
+        {
+          "id": "1739869810899",
+          "title": "Free Lancer Night",
+          "amount": 4000,
+          "date": "2025-02-07"
+        }
+      ]
     },
     {
-      "id": "1739861021257",
-      "title": "43",
-      "amount": 345,
-      "date": "2025-02-17"
+      "id": "f877",
+      "firstName": "Ali Reza",
+      "lastName": "Akbari",
+      "email": "alirezaakbari.cs@gmail.com",
+      "password": "123",
+      "confirmPassword": "123",
+      "userExpense": [
+        {
+          "id": "1739871412465",
+          "title": "23",
+          "amount": 23,
+          "date": "2025-02-13"
+        }
+      ],
+      "userIncome": [
+        {
+          "id": "1739871435073",
+          "title": "232",
+          "amount": 32,
+          "date": "2025-02-15"
+        }
+      ]
     }
   ]
 }

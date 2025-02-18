@@ -19,7 +19,7 @@ type Props = {
 }
 
 const Income = ({ incomes = [], setIncomes, currency }: Props) => {
-    const [incomeList, setIncomeList] = useState<IncomesProps[]>(incomes);
+    const [incomeList, setIncomeList] = useState<IncomesProps[]>([]);
     const [input, setInput] = useState(true);
     const [title, setTitle] = useState("");
     const [amount, setAmount] = useState(0);
@@ -31,17 +31,18 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
 
     const usenavigate = useNavigate();
     useEffect(() => {
-      let user = sessionStorage.getItem('user');
-      if(user === '' || user === null){
-        usenavigate('/login');
-      }
+        const user = sessionStorage.getItem('user');
+        if (user === '' || user === null) {
+            usenavigate('/login');
+        }
     }, [])
 
     // Update incomeList when incomes prop changes
     useEffect(() => {
         setIncomeList(incomes);
     }, [incomes]);
-
+    
+    const totalAmount = incomeList.reduce((acc, item) => acc + item.amount, 0);
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const newIncome = {
@@ -50,34 +51,55 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
             amount,
             date
         };
-
+    
         try {
-            await axios.post('http://localhost:3000/users', newIncome); // Adjust the URL as needed
-            const updatedList = [...incomeList, newIncome];
-            setIncomeList(updatedList);
-            setIncomes(updatedList);
+            const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+            if (!user.id) {
+                console.error("User not found!");
+                return;
+            }
+            const res = await axios.get(`http://localhost:3000/users/${user.id}`);
+            const userData = res.data;
+            const updatedIncome = [...userData.userIncome, newIncome];
+            await axios.put(`http://localhost:3000/users/${user.id}`, {
+                ...userData,
+                userIncome: updatedIncome
+            });
+            setIncomeList(updatedIncome);
+            setIncomes(updatedIncome);
             resetForm();
         } catch (error) {
             console.error("Error adding income:", error);
         }
     }
-
-    const totalAmount = incomeList.reduce((acc, item) => acc + item.amount, 0);
-
+    
     const deleteIncomeHandler = async (id: number) => {
         const confirmDelete = window.confirm('Do you want to delete?');
         if (confirmDelete) {
             try {
-                await axios.delete(`http://localhost:3000/users/${id}`); // Adjust the URL as needed
-                const updatedList = incomeList.filter(item => item.id !== id);
-                setIncomeList(updatedList);
-                setIncomes(updatedList);
+                const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+                if (!user.id) {
+                    console.error("User not found!");
+                    return;
+                }
+                const res = await axios.get(`http://localhost:3000/users/${user.id}`);
+                const userData = res.data;
+    
+                const updatedIncomes = userData.userIncome.filter((item: IncomesProps) => item.id !== id);
+    
+                await axios.put(`http://localhost:3000/users/${user.id}`, {
+                    ...userData,
+                    userIncome: updatedIncomes
+                });
+    
+                setIncomeList(updatedIncomes);
+                setIncomes(updatedIncomes);
             } catch (error) {
                 console.error("Error deleting income:", error);
             }
         }
     }
-
+    
     const editIncomeHandler = (income: IncomesProps) => {
         setEditId(income.id);
         setEditTitle(income.title);
@@ -85,7 +107,7 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
         setEditDate(income.date);
         setInput(false);
     }
-
+    
     const handleEditSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const updatedIncome = {
@@ -94,12 +116,25 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
             amount: editAmount,
             date: editDate
         };
-        
+    
         try {
-            await axios.put(`http://localhost:3000/users/${editId}`, updatedIncome); // Adjust the URL as needed
-            const updatedList = incomeList.map(item =>
+            const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+            if (!user.id) {
+                console.error("User not found!");
+                return;
+            }
+            const res = await axios.get(`http://localhost:3000/users/${user.id}`);
+            const userData = res.data;
+    
+            const updatedList = userData.userIncome.map((item: IncomesProps) =>
                 item.id === editId ? updatedIncome : item
             );
+    
+            await axios.put(`http://localhost:3000/users/${user.id}`, {
+                ...userData,
+                userIncome: updatedList
+            });
+    
             setIncomeList(updatedList);
             setIncomes(updatedList);
             resetEditFields();
@@ -107,6 +142,7 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
             console.error("Error updating income:", error);
         }
     }
+   
 
     const resetForm = () => {
         setTitle("");
@@ -122,10 +158,25 @@ const Income = ({ incomes = [], setIncomes, currency }: Props) => {
         setEditDate('');
         setInput(true);
     }
+    interface user {
+        email: string;
+    }
+    useEffect(() => {
+        const storedUser = sessionStorage.getItem('user');
+        if (storedUser) {
+            const userData = JSON.parse(storedUser);
+            axios.get('http://localhost:3000/users')
+                .then(res => {
+                    const currentUser = res.data.find((u: user) => u.email === userData.email);
+                    setIncomeList(currentUser?.userIncome || []);
+                })
+                .catch(error => console.error("Error fetching expenses:", error));
+        }
+    }, [incomes]);
 
     return (
         <div className='bg-[#f7f8fa] flex flex-col items-center'>
-            <Navbar/>
+            <Navbar />
             {input ? (
                 <div className='h-[40%] w-[80%] rounded-lg flex flex-col items-center p-4'>
                     <h1 className='font-semibold mb-4'>Income Transaction</h1>

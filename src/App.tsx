@@ -11,7 +11,7 @@ import PageNotFound from './Components/PageNotFound';
 interface User {
   email: string;
   userExpense?: ExpenseProps[];
-  userIncome?: ExpenseProps[];
+  userIncome?: IncomeProps[];
 }
 
 interface IncomeProps {
@@ -38,9 +38,10 @@ function App() {
     const fetchData = async () => {
       try {
         const [expensesRes, incomesRes] = await Promise.all([
-          axios.get('http://localhost:3000/expenses'),
-          axios.get('http://localhost:3000/incomes')
+          axios.get('http://localhost:3000/users'),
+          axios.get('http://localhost:3000/users')
         ]);
+        
         setExpenses(expensesRes.data);
         setIncomes(incomesRes.data);
       } catch (err) {

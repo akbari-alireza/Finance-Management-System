@@ -43,6 +43,8 @@ const Registration: React.FC = () => {
         }
     }
 
+    
+
     return (
         <div className='w-full flex flex-col gap-5 h-screen justify-center items-center'>
             <div className='bg-gray-50 px-5 py-5 w-[70%] md:w-[50%] rounded-sm shadow-lg border'>
