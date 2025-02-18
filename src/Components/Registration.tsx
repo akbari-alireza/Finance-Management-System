@@ -42,7 +42,6 @@ const Registration: React.FC = () => {
             console.error('Error fetching users or during registration:', error);
         }
     }
-
     
 
     return (

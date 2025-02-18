@@ -179,7 +179,7 @@ const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
     <div className='bg-[#f7f8fa] flex flex-col items-center'>
       <Navbar/>
       {input ? (
-        <div className='h-[40%] w-[80%] rounded-lg flex flex-col items-center p-4'>
+        <div className='h-[40%] w-[90%] max-w-[1300px] rounded-lg flex flex-col items-center p-4'>
           <h1 className='font-semibold mb-4'>Expense Transactions</h1>
           <table className='min-w-full border-collapse border border-[#767cff] text-[12px]'>
             <thead>
