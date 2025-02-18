@@ -33,37 +33,101 @@ const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
     e.preventDefault();
 
     const newExpense = {
-      id: `${Date.now()}`, 
-      title,
-      amount,
-      date,
+        id: `${Date.now()}`,
+        title,
+        amount,
+        date,
     };
 
     try {
-      await axios.post('http://localhost:3000/Expense', newExpense); 
-      setExpenseList([...expenseList, newExpense]);
-      setExpenses([...expenseList, newExpense]);
-      resetForm();
+        const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+        if (!user.id) {
+            console.error("User not found!");
+            return;
+        }
+        const res = await axios.get(`http://localhost:3000/users/${user.id}`);
+        const userData = res.data;
+
+        const updatedExpenses = [...userData.userExpense, newExpense];
+
+        await axios.put(`http://localhost:3000/users/${user.id}`, {
+            ...userData,
+            userExpense: updatedExpenses
+        });
+        setExpenseList(updatedExpenses);
+        setExpenses(updatedExpenses);
+        resetForm();
     } catch (error) {
-      console.error("Error adding expense:", error);
+        console.error("Error adding expense:", error);
     }
-  };
+};
 
   const totalAmount = expenseList.reduce((acc, item) => acc + item.amount, 0);
 
   const deleteExpenseHandler = async (id: number) => {
     const confirmDelete = window.confirm('Do you want to delete?');
     if (confirmDelete) {
-      try {
-        await axios.delete(`http://localhost:3000/Expense/${id}`); 
-        const updatedList = expenseList.filter(item => item.id !== id);
-        setExpenseList(updatedList);
-        setExpenses(updatedList);
-      } catch (error) {
-        console.error("Error deleting expense:", error);
-      }
+        try {
+            const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+            if (!user.id) {
+                console.error("User not found!");
+                return;
+            }
+
+            const res = await axios.get(`http://localhost:3000/users/${user.id}`);
+            const userData = res.data;
+
+            const updatedExpenses = userData.userExpense.filter((item: ExpenseProps) => item.id !== id);
+
+            await axios.put(`http://localhost:3000/users/${user.id}`, {
+                ...userData,
+                userExpense: updatedExpenses
+            });
+
+            setExpenseList(updatedExpenses);
+            setExpenses(updatedExpenses);
+        } catch (error) {
+            console.error("Error deleting expense:", error);
+        }
     }
-  };
+};
+
+
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const updatedExpense = {
+        id: editId,
+        title: editTitle,
+        amount: editAmount,
+        date: editDate,
+    };
+
+    try {
+        const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+        if (!user.id) {
+            console.error("User not found!");
+            return;
+        }
+
+        const res = await axios.get(`http://localhost:3000/users/${user.id}`);
+        const userData = res.data;
+        const updatedExpenses = userData.userExpense.map((item: ExpenseProps) =>
+            item.id === editId ? updatedExpense : item
+        );
+
+        await axios.put(`http://localhost:3000/users/${user.id}`, {
+            ...userData,
+            userExpense: updatedExpenses
+        });
+
+        setExpenseList(updatedExpenses);
+        setExpenses(updatedExpenses);
+        resetEditFields();
+    } catch (error) {
+        console.error("Error updating expense:", error);
+    }
+};
 
   const editExpenseHandler = (expense: ExpenseProps) => {
     setEditId(expense.id);
@@ -71,29 +135,6 @@ const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
     setEditAmount(expense.amount);
     setEditDate(expense.date);
     setInput(false);
-  };
-
-  const handleEditSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const updatedExpense = {
-      id: editId,
-      title: editTitle,
-      amount: editAmount,
-      date: editDate,
-    };
-
-    try {
-      await axios.put(`http://localhost:3000/Expense/${editId}`, updatedExpense);
-      const updatedList = expenseList.map(item =>
-        item.id === editId ? updatedExpense : item
-      );
-      setExpenseList(updatedList);
-      setExpenses(updatedList);
-      resetEditFields();
-    } catch (error) {
-      console.error("Error updating expense:", error);
-    }
   };
 
   const resetForm = () => {
@@ -111,10 +152,26 @@ const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
     setInput(true);
   };
   const usenavigate = useNavigate();
+  interface user {
+    email: string;
+  }
   useEffect(() => {
-    let user = sessionStorage.getItem('user');
+    const storedUser = sessionStorage.getItem('user');
+    if (storedUser) {
+        const userData = JSON.parse(storedUser);
+        axios.get('http://localhost:3000/users')
+            .then(res => {
+                const currentUser = res.data.find((u:user) => u.email === userData.email);
+                setExpenseList(currentUser?.userExpense || []);
+            })
+            .catch(error => console.error("Error fetching expenses:", error));
+    }
+}, []);
+
+  useEffect(() => {
+    const user = sessionStorage.getItem('user');
     if(user === '' || user === null){
-      usenavigate('/');
+      usenavigate('/login');
     }
   }, [])
 

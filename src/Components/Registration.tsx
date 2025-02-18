@@ -1,21 +1,18 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 const Registration: React.FC = () => {
-    const usenavigate = useNavigate();
-    useEffect(() => {
-        let user = sessionStorage.getItem('user');
-        if (user === '' || user === null) {
-            usenavigate('/');
-        }
-    }, [])
+    // const usenavigate = useNavigate();
+    
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        userExpense: [],
+        userIncome: []
     });
     const navigate = useNavigate();
     const [errorMessages, setErrorMessages] = useState('');
@@ -76,7 +73,7 @@ const Registration: React.FC = () => {
                         </div>
                     </div>
                     <div>
-                        <label className='font-semibold' htmlFor="email">Email<span className='text-red-600'>*</span></label>
+                        <label className='font-semibold' htmlFor="email">Email<span className='text-red-600'>*</span>  <span className='text-red-500'>{errorEmail}</span></label>
                         <input
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             required
@@ -85,7 +82,7 @@ const Registration: React.FC = () => {
                             type="email"
                             placeholder='Enter Email'
                         />
-                        <p className='text-red-500'>{errorEmail}</p>
+                       
                     </div>
                     <div>
                         <label className='font-semibold' htmlFor="password">Password<span className='text-red-600'>*</span></label>
@@ -99,7 +96,7 @@ const Registration: React.FC = () => {
                         />
                     </div>
                     <div>
-                        <label className='font-semibold' htmlFor="confirmPassword">Confirm Password<span className='text-red-600'>*</span></label>
+                        <label className='font-semibold' htmlFor="confirmPassword">Confirm Password<span className='text-red-600'>*</span> <span className={errorMessages === 'Correct' ? 'text-green-600' : 'text-red-500'}>{errorMessages}</span></label>
                         <input
                             onChange={(e) => {
                                 setFormData({ ...formData, confirmPassword: e.target.value });
@@ -111,14 +108,14 @@ const Registration: React.FC = () => {
                             type="password"
                             placeholder='Confirm Password'
                         />
-                        <p className={errorMessages === 'Correct' ? 'text-green-600' : 'text-red-500'}>{errorMessages}</p>
+                        
                     </div>
                     <div className={`flex justify-end`}>
                         <button className='bg-[#767cff] text-white px-5 py-1 rounded-md'>Sign Up</button>
                     </div>
                 </form>
             </div>
-            <p>If you have an account, please <NavLink to={'/'}><span className='text-blue-500 underline'>Login Now</span></NavLink></p>
+            <p>If you have an account, please <NavLink to={'/login'}><span className='text-blue-500 underline'>Login Now</span></NavLink></p>
         </div>
     );
 }

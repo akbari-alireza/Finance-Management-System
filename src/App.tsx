@@ -1,60 +1,86 @@
-import React, { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Income from './Pages/Income'
-import Navbar from './Components/Navbar'
-import Expense from './Pages/Expense'
-import Dashboard from './Pages/Dashboard'
-import axios from 'axios'
-import Registration from './Components/Registration'
-import Login from './Components/Login'
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Income from './Pages/Income';
+import Expense from './Pages/Expense';
+import Dashboard from './Pages/Dashboard';
+import axios from 'axios';
+import Registration from './Components/Registration';
+import Login from './Components/Login';
+import PageNotFound from './Components/PageNotFound';
+
+interface User {
+  email: string;
+  userExpense?: ExpenseProps[];
+  userIncome?: ExpenseProps[];
+}
+
+interface IncomeProps {
+  id: number;
+  title: string;
+  amount: number;
+  date: string;
+}
+interface ExpenseProps {
+  id: number;
+  title: string;
+  amount: number;
+  date: string;
+}
+
 function App() {
-
-  const [incomes, setIncomes] = useState([]);
-  const [loadingIncomes, setLoadingIncomes] = useState(true);
-  useEffect(() => {
-    axios.get('http://localhost:3000/Income')
-      .then(res => {
-        setIncomes(res.data);
-        setLoadingIncomes(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setLoadingIncomes(false);
-      })
-  }, [])
-
-  const [loadingExpenses, setLoadingExpenses] = useState(true);
-
-  const [expenses, setExpenses] = useState([]);
-  useEffect(() => {
-    axios.get('http://localhost:3000/Expense')
-      .then(res => {
-        setExpenses(res.data);
-        setLoadingExpenses(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setLoadingExpenses(false);
-      })
-  }, [])
+  const [incomes, setIncomes] = useState<User[]>([]);
+  const [expenses, setExpenses] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
   const currency = "$";
+  const [user, setUser] = useState<User | null>(null);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [expensesRes, incomesRes] = await Promise.all([
+          axios.get('http://localhost:3000/expenses'),
+          axios.get('http://localhost:3000/incomes')
+        ]);
+        setExpenses(expensesRes.data);
+        setIncomes(incomesRes.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const storedUser = sessionStorage.getItem('user');
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        console.error('Error parsing user data:', error);
+        setUser(null);
+      }
+    }
+  }, []);
+
+  const userExpenses = user ? (expenses.find((u) => u.email === user.email)?.userExpense || []) : [];
+  const userIncomes = user ? (incomes.find((u) => u.email === user.email)?.userIncome || []) : [];
 
   return (
     <Router>
-      {loadingIncomes || loadingExpenses ? <h1>Loading...</h1> :
+      {loading ? <h1>Loading...</h1> : (
         <Routes>
-          <Route path='/Registration' element={<Registration/>} />
-          <Route path='/' element={<Login/>} />
-          <Route path='/incomes' element={<Income incomes={incomes} setIncomes={setIncomes} currency={currency} />} />
-          <Route path='/expense' element={<Expense expenses={expenses} setExpenses={setExpenses} />} />
-          <Route path='/dashboard' element={<Dashboard expenses={expenses} incomes={incomes} />} />
-          <Route path='*' element={<h1>Not Found</h1>} />
-
-        </Routes>}
-
+          <Route path='/registration' element={<Registration />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/incomes' element={<Income incomes={userIncomes} setIncomes={setIncomes} currency={currency} />} />
+          <Route path='/expense' element={<Expense expenses={userExpenses} setExpenses={setExpenses} currency={currency} />} />
+          <Route path='/dashboard' element={<Dashboard expenses={userExpenses} incomes={userIncomes} />} />
+          <Route path='*' element={<PageNotFound />} />
+        </Routes>
+      )}
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -9,6 +9,8 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 ChartJS.register(
   CategoryScale,
@@ -19,18 +21,32 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-type Props1 = {
+type Expense = {
   id: number;
   title: string;
   amount: number;
   date: string;
 };
+const LineChart = () => {
+  const [expenses, setExpenses] = useState<Expense[]>([])
+  useEffect(() => {
+    const fetchUserExpences = async () => {
+      try {
+        const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+        if (!user.id) {
+          console.log("User not fount!");
+          return;
+        }
+        const res = await axios.get(`http://localhost:3000/users/${user.id}`);
+        setExpenses(res.data.userExpense || [])
+      } catch (error) {
+        console.error("Error fetching user expenses:", error)
+      }
+    };
+    fetchUserExpences();
+  },[]);
 
-type Props = {
-  expenses: Props1[];
-}
-const LineChart = ({ expenses }: Props) => {
-  const incomes = {
+  const chartData = {
     labels: expenses.map(item => `${item.date} - ${item.title}`),
     datasets: [
       {
@@ -42,8 +58,10 @@ const LineChart = ({ expenses }: Props) => {
     ],
   };
 
+
+
   return (
-    <Line className='w-[30%]' data={incomes} />
+    <Line className='w-[30%]' data={chartData} />
   );
 };
 

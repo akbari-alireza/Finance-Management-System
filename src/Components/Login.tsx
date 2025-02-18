@@ -16,21 +16,39 @@ const Login = () => {
         e.preventDefault();
         axios.get('http://localhost:3000/users')
             .then(result => {
-                result.data.map((user : { email: string, password: string })  => {
-                    if (user.email === formData.email) {
-                        if (user.password === formData.password) {
-                            alert('login seccesfully')
-                            sessionStorage.setItem('user', JSON.stringify(user))
-                            navigate('/dashboard')
-                        } else {
-                            setErrorMessages('password or email is not correct')
+                const user = result.data.find((user: { email: string, password: string }) => 
+                    user.email === formData.email && user.password === formData.password
+                );
+    
+                if (user) {
+                    sessionStorage.setItem('user', JSON.stringify(user));
+                    navigate('/dashboard');
+                } else {
+                    setErrorMessages('Email or password is incorrect');
+                }
+            })
+            .catch(error => console.error("Login error:", error));
+    };
+    
+    // const handleSubmit = async (e: React.FormEvent) => {
+    //     e.preventDefault();
+    //     axios.get('http://localhost:3000/users')
+    //         .then(result => {
+    //             result.data.map((user : { email: string, password: string })  => {
+    //                 if (user.email === formData.email) {
+    //                     if (user.password === formData.password) {
+    //                         alert('login seccesfully')
+    //                         sessionStorage.setItem('user', JSON.stringify(user))
+    //                         navigate('/dashboard')
+    //                     } else {
+    //                         setErrorMessages('password or email is not correct')
 
-                        }
-                    }
-                })
-            });
+    //                     }
+    //                 }
+    //             })
+    //         });
 
-    }
+    // }
 
     return (
         <div className='w-full flex flex-col gap-5 h-screen justify-center items-center' >
