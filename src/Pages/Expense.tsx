@@ -173,7 +173,7 @@ const Expense = ({ expenses = [], setExpenses, currency }: Props) => {
     if(user === '' || user === null){
       usenavigate('/login');
     }
-  }, [])
+  },[usenavigate])
 
   return (
     <div className='bg-[#f7f8fa] flex flex-col items-center'>

@@ -1,3 +1,24 @@
 {
-  "users": []
+  "users": [
+    {
+      "id": "975a",
+      "firstName": "Ali Reza",
+      "lastName": "Akbari",
+      "email": "ali@gmail.com",
+      "password": "123",
+      "confirmPassword": "123",
+      "userExpense": [],
+      "userIncome": []
+    },
+    {
+      "id": "f27c",
+      "firstName": "Ali Reza",
+      "lastName": "Akbari",
+      "email": "alirezaakbari.cs@gmail.com",
+      "password": "123",
+      "confirmPassword": "123",
+      "userExpense": [],
+      "userIncome": []
+    }
+  ]
 }

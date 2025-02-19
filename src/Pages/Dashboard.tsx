@@ -11,9 +11,15 @@ type Transaction = {
   amount: number;
   date: string;
 };
+type ExpenseType = {
+  id: number;
+  title: string;
+  amount: number;
+  date: string;
+};
 
 const Dashboard = () => {
-  const [expenses, setExpenses] = useState<Transaction[]>([]);
+  const [expenses, setExpenses] = useState<ExpenseType[]>([]);
   const [incomes, setIncomes] = useState<Transaction[]>([]);
   const navigate = useNavigate();
 
